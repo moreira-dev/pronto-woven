@@ -14,7 +14,7 @@ docker compose up
 
 ## **ASSUMPTIONS**
 
-TODO
+- Peter always starts the game
 
 
 
