@@ -8,3 +8,8 @@
 # Composer
 vendor/
 *.phar
+
+# Tests and code style
+.phpunit.cache/
+.php-cs-fixer.cache
+coverage/

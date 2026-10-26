@@ -4,5 +4,4 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./src:/usr/src/pronto/src
-      - ./assets:/usr/src/pronto/assets
+      - .:/usr/src/pronto
