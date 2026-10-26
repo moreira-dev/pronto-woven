@@ -7,3 +7,4 @@ services:
       - ./src:/usr/src/pronto/src
       - ./tests:/usr/src/pronto/tests
       - ./assets:/usr/src/pronto/assets
+      - ./.php-cs-fixer.dist.php:/usr/src/pronto/.php-cs-fixer.dist.php
