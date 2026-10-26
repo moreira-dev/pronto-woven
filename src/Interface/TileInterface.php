@@ -2,6 +2,7 @@
 
 namespace ProntoWoven\Interface;
 
+use ProntoWoven\Model\Board;
 use ProntoWoven\Model\Player;
 
 interface TileInterface
@@ -11,11 +12,7 @@ interface TileInterface
 	public string $type { get; set; }
 
 	/**
-	 * Applies the effect of the tile on the player when they land on it.
-	 *
-	 * @param Player $player
-	 *
-	 * @return void
+	 * Applies the effect of the tile on the player when they land on it
 	 */
-	public function landed(Player $player): void;
+	public function landed(Player $player, Board $board): void;
 }

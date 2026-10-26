@@ -4,11 +4,13 @@ namespace ProntoWoven\Service;
 
 use ProntoWoven\Interface\TileInterface;
 
-class BoardLoader {
-
+class BoardLoader
+{
 	public const string BOARD_FILE = 'board.json';
 
-	public function __construct(private readonly string $assetsPath) {}
+	public function __construct(private readonly string $assetsPath)
+	{
+	}
 
 	/**
 	 * Loads the board from a BOARD_FILE JSON file

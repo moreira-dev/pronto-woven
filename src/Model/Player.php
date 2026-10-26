@@ -2,8 +2,6 @@
 
 namespace ProntoWoven\Model;
 
-use ProntoWoven\Interface\TileInterface;
-
 class Player
 {
 	public string $name;
@@ -19,15 +17,22 @@ class Player
 
 	/**
 	 * @param int   $steps
-	 * @param array<TileInterface> $board
+	 * @param Board $board
 	 *
 	 * @return void
 	 */
-	public function move(int $steps, array $board): void
+	public function move(int $steps, Board $board): void
 	{
-		$boardSize = count($board);
+		$boardSize = count($board->tiles);
 		$this->position = ($this->position + $steps) % $boardSize;
 
-		$board[$this->position]->landed($this);
+		$board->tiles[$this->position]->landed($this, $board);
+	}
+
+	public function hasAllPropertiesOfColour(string $colour, Board $board): bool
+	{
+		$propertiesOfColour = $board->getPropertiesByColour($colour);
+
+		return array_all($propertiesOfColour, fn ($property) => $property->owner === $this);
 	}
 }

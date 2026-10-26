@@ -2,11 +2,13 @@
 
 namespace ProntoWoven\Service;
 
-class RollsLoader {
-
+class RollsLoader
+{
 	public const string ROLLS_FOLDER = 'rolls';
 
-	public function __construct(private readonly string $assetsPath) {}
+	public function __construct(private readonly string $assetsPath)
+	{
+	}
 
 	/**
 	 * Loads all json files in the rolls folder

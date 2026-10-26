@@ -22,13 +22,13 @@ namespace ProntoWoven;
  */
 
 use ProntoWoven\Interface\TileInterface;
+use ProntoWoven\Model\Board;
 use ProntoWoven\Model\Player;
 use SplQueue;
 
 class Monopoly
 {
-
-	private array $board;
+	private Board $board;
 	private array $players;
 	private SplQueue $rolls;
 
@@ -36,11 +36,11 @@ class Monopoly
 
 
 	/**
-	 * @param array<TileInterface> $board
+	 * @param Board $board
 	 * @param array<Player>  $players
 	 * @param SplQueue $rolls
 	 */
-	public function __construct(array $board, array $players, SplQueue $rolls)
+	public function __construct(Board $board, array $players, SplQueue $rolls)
 	{
 		$this->players = $players;
 		$this->board = $board;
@@ -53,7 +53,7 @@ class Monopoly
 		while (!$this->rolls->isEmpty()) {
 			$die = $this->rolls->dequeue();
 
-			echo "Turn: " . $this->players[$this->playerTurn]->name . " rolls a $die with \${$this->players[$this->playerTurn]->money}\n";
+			echo 'Turn: ' . $this->players[$this->playerTurn]->name . " rolls a $die with \${$this->players[$this->playerTurn]->money}\n";
 
 			$this->players[$this->playerTurn]->move($die, $this->board);
 
