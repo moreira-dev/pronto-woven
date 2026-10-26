@@ -1,0 +1,22 @@
+{
+	"name": "pronto/woven-monopoly",
+	"description": "PHP implementation of the Woven Monopoly game",
+	"type": "project",
+	"require": {
+		"php": "^8.5"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^13.4",
+		"friendsofphp/php-cs-fixer": "^3.95"
+	},
+	"autoload": {
+		"psr-4": {
+			"ProntoWoven\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"ProntoWoven\\Tests\\": "tests/"
+		}
+	}
+}
