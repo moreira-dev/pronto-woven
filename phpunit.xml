@@ -7,6 +7,11 @@
 		 failOnEmptyTestSuite="true"
 		 failOnRisky="true"
 		 failOnWarning="true">
+	<php>
+		<const name="INITIAL_MONEY" value="16"/>
+		<const name="RENT_RATIO" value="0.1"/>
+		<const name="RENT_ALL_COLOURS_RATIO" value="2"/>
+	</php>
 	<testsuites>
 		<testsuite name="Unit Tests">
 			<directory suffix="Test.php">tests</directory>

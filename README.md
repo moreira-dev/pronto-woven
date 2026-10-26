@@ -20,6 +20,7 @@ docker compose up
 - If a player cannot purchase a property they go bankrupt and the game ends
 - If a player doesn't have enough money to pay rent, the player receiving rent gets only the amount of money the player has left.
 - The game only ends when a player goes bankrupt or when all rolls have been used.
+- Rolls are always a positive integer greater than 0
 
 
 

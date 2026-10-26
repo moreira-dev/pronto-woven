@@ -10,7 +10,7 @@ class Property implements TileInterface
 {
 	public string $name;
 	public string $type;
-	public string $price;
+	public float $price;
 	public string $colour;
 
 	public ?Player $owner = null;
