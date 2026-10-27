@@ -1,0 +1,18 @@
+# File system
+.DS_Store
+
+# IDEs
+.idea
+.vscode
+
+# Composer
+vendor/
+*.phar
+
+# Tests and code style
+.phpunit.cache/
+.php-cs-fixer.cache
+coverage/
+
+# Runtime logs
+assets/logs/*.txt

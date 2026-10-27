@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+		 bootstrap="vendor/autoload.php"
+		 cacheDirectory=".phpunit.cache"
+		 colors="true"
+		 failOnEmptyTestSuite="true"
+		 failOnRisky="true"
+		 failOnWarning="true">
+	<php>
+		<const name="INITIAL_MONEY" value="16"/>
+		<const name="GO_MONEY_ADD" value="1"/>
+		<const name="RENT_RATIO" value="0.1"/>
+		<const name="RENT_ALL_COLOURS_RATIO" value="2"/>
+	</php>
+	<testsuites>
+		<testsuite name="Unit Tests">
+			<directory suffix="Test.php">tests</directory>
+		</testsuite>
+	</testsuites>
+	<source>
+		<include>
+			<directory suffix=".php">src</directory>
+		</include>
+		<exclude>
+			<file>src/index.php</file>
+		</exclude>
+	</source>
+</phpunit>

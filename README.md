@@ -1,112 +1,209 @@
-# Woven coding test
- 
-Your task is to write a program that plays the game of Woven Monopoly.
- 
-In Woven Monopoly the dice rolls are set ahead of time, so the game is deterministic.
- 
-## Game rules
- 
-* There are four players who take turns in the following order:
-  * Peter
-  * Billy
-  * Charlotte
-  * Sweedal
-* Each player starts with $16
-* Everybody starts on GO
-* You get $1 when you pass GO (this excludes your starting move)
-* If you land on a property, you must buy it
-* If you land on an owned property, you must pay rent to the owner
-* If the same owner owns all property of the same colour, the rent is doubled
-* Once someone is bankrupt, whoever has the most money remaining is the winner
-* There are no chance cards, jail or stations
-* The board wraps around (when you reach the last space, the next space is the first space)
- 
-## What to build
- 
-* Load the board from `board.json`
-* Implement the game logic as per the rules
-* Load the dice rolls from `rolls_1.json` and `rolls_2.json` and simulate each game. For each game, report:
-  * Who wins
-  * How much money each player ends up with
-  * Which space each player finishes on
- 
-## How we will run your program
- 
-We will run your program ourselves, including against boards and roll files you haven't seen. They follow the same formats as the files in this pack, but boards can have a different number of spaces and colour groups of different sizes, and roll files can be any length. Please don't hard-code anything about the sample files.
- 
-Your program must:
- 
-* Take the path to a board file and the path to a rolls file as its two arguments
-* Accept a `--json` flag that prints the result to standard output in this shape (extra fields are fine):
- 
+# Woven monopoly implementation
+
+See the [Woven Monopoly brief](docs/WOVEN_BRIEF.md) to understand initial rules and requirements.
+
+## How to run
+
+For simplicity and compatibility, running this program using Docker is recommended.
+
+Run the game with json output (the first run will take some time):
+```bash
+docker compose run --rm -T -q app ./assets/board.json ./assets/rolls/rolls_1.json --json 2>/dev/null
+```
+**Please note that the json files must be on the assets folder for the docker container to be able to access them**
+
+Run the game with human output:
+```bash
+docker compose run --rm -T -q app ./assets/board.json ./assets/rolls/rolls_1.json
+```
+
+Run the tests:
+```bash
+docker compose run --rm --entrypoint composer app test
+```
+
+See test coverage:
+```bash
+docker compose run --rm --entrypoint composer app test:coverage
+```
+
+Run the linter:
+```bash
+docker compose run --rm --entrypoint composer app lint
+```
+
+Fix linting:
+```bash
+docker compose run --rm --entrypoint composer app lint:fix
+```
+
+If you find any issues with the docker commands above, try building the image first:
+```bash
+docker compose build app
+```
+
+## Language and architecture
+
+The game is written in PHP 8.5.*, with only dependencies for testing and linting. The application is CLI only.
+
+I went with PHP because it has strong OOP support and it's not compiled. My ability to quickly navigate changes is stronger in PHP than Ruby.
+
+### File structure
+
+The entrypoint of the application is the [index.php](src/index.php) file.
+
+For this project, simplicity of onboarding was chosen over specific architectural conventions. I focused on keeping the code simple while extendable.
+
+The `Model` folder contains the main entities taking part in the game. These classes include both state and behaviour.
+
+The `Service` folder contains classes with just behaviour that integrate with other classes and provide support.
+
+The `Monopoly` class is the orchestrator of the game, with the main responsibility of managing game state.
+
+### Extending the game
+
+The game can be extended to add new tile types.
+
+All tile types used in the board.json must have a corresponding class in the `src/Model/Tiles/` directory that implements [TileInterface](src/Interface/TileInterface.php).
+
+
+## Configuration
+
+The following configuration can be changed via global constants in the [index.php](src/index.php) file.
+
+- INITIAL_MONEY: The amount of money each player starts with. Default is 16.
+- GO_BONUS: The amount of money a player receives when passing the GO tile.
+- RENT_RATIO: The ratio of the property price that is paid as rent. Default is 0.2 (20%).
+- RENT_ALL_COLOURS_RATIO: The multiplier applied to the RENT_RATIO when a player owns all properties of the same colour. Default is 2 (double rent).
+
+## **ASSUMPTIONS**
+
+- Peter always starts the game
+- Board.json structure is valid and contains all required fields
+- Money can have cents
+- If a player cannot purchase a property they go bankrupt and the game ends
+- If a player doesn't have enough money to pay rent, the player receiving rent gets only the amount of money the player has left.
+- The game only ends when a player goes bankrupt or when all rolls have been used.
+- Rolls are always a positive integer greater than 0
+- Rent is 20% of the property price
+
+## Roll tests
+
+### rolls_1.json
+
+Output:
+
 ```json
 {
-  "winners": ["Peter"],
-  "players": [
-    { "name": "Peter", "money": 20, "space": "Massizim" },
-    { "name": "Billy", "money": 12, "space": "GO" },
-    { "name": "Charlotte", "money": 9, "space": "YOMG" },
-    { "name": "Sweedal", "money": 3, "space": "The Burvale" }
-  ]
+	"winners": [
+		"Peter"
+	],
+	"players": [
+		{
+			"name": "Peter",
+			"money": 24.4,
+			"space": "Lanzhou Beef Noodle"
+		},
+		{
+			"name": "Billy",
+			"money": 10.2,
+			"space": "Gami Chicken"
+		},
+		{
+			"name": "Charlotte",
+			"money": 14,
+			"space": "Betty's Burgers"
+		},
+		{
+			"name": "Sweedal",
+			"money": 12.4,
+			"space": "Gami Chicken"
+		}
+	]
 }
 ```
- 
-`winners` is a list so that you can report a tie. The numbers above are an example of the format, not the answer.
- 
-Put the exact command to run it at the top of your README, for example `bin/woven_monopoly board.json rolls_1.json --json`. Without `--json`, print whatever human-readable summary you think is most useful.
- 
-## Gaps in the rules
- 
-The rules leave some situations open. Real requirements usually do, so this is on purpose. Where you find a gap, make a sensible decision, implement it consistently, and record it in an **ASSUMPTIONS** section of your README with a sentence on why you chose it.
- 
-If you would rather ask than assume, email [contact email]. Asking questions never counts against you.
- 
-## Using AI
- 
-We expect you to use AI tools and we encourage it. We are interested in how you direct them and how you check their work, so we won't mark you down for the amount of code an AI wrote.
- 
-Please include an `AI_USAGE.md` file that covers:
- 
-* Which tools you used, and what you used each one for
-* At least two places where a tool was wrong, unhelpful or over-complicated things, how you noticed, and what you did about it
-* Something you decided to write or rewrite yourself, and why
- 
-If your tool can export its sessions or chat history (Cursor and Claude Code both can), include the exports in an `ai-sessions/` folder. Remove anything personal first.
- 
-## Design your own test game
- 
-Add a `rolls_3.json` file that you have designed by hand to produce a particular situation in the game. In your README, explain what it tests and what result you expect, worked out before you ran your program. Keep it short: 10 to 30 rolls is plenty.
- 
-## Language
- 
-We are a Ruby team (we run JRuby in production, so code compatible with Ruby 3.1 is ideal). Ruby is preferred. If you choose another language, tell us why in your README.
- 
-## Scope and time
- 
-* Plan on 2 to 3 hours. If you go over, stop and note in your README what you would do next
-* This is a command-line program: no user interface, database or web framework
-* Keep third-party dependencies to testing and linting tools
- 
-## What we are looking for
- 
-* Code that is well thought out and tested
-* Clean and readable code
-* Extensibility, since the rules will change
-* A git history with small changes committed often, so we can see your approach
- 
-Please approach this as you would a production problem, using whatever approach to coding and testing you think is appropriate.
- 
-## What to submit
- 
-* Your source code, including the `.git` folder (a zip of the repository or a link to it)
-* A README with:
-  * How to install dependencies, run the tests and run the program
-  * Your design decisions
-  * Your ASSUMPTIONS section
-  * The output of your program for `rolls_1.json` and `rolls_2.json`
-* `AI_USAGE.md`, and `ai-sessions/` if you have exports
-* `rolls_3.json`, with its explanation in your README
- 
-## What happens next
- 
-If we progress with your application, we will book a 60-minute session with you. You will walk us through your code, make a small change to it, and extend it with a new rule using your usual tools, including AI. Part of the session is without AI assistance, so make sure you are comfortable explaining and changing your own code. Please have your development environment ready to share your screen.
+
+### rolls_2.json
+
+Output:
+
+```json
+{
+	"winners": [
+		"Charlotte"
+	],
+	"players": [
+		{
+			"name": "Peter",
+			"money": 17,
+			"space": "Fast Kebabs"
+		},
+		{
+			"name": "Billy",
+			"money": 21.6,
+			"space": "Gami Chicken"
+		},
+		{
+			"name": "Charlotte",
+			"money": 27,
+			"space": "Fast Kebabs"
+		},
+		{
+			"name": "Sweedal",
+			"money": 14.4,
+			"space": "Fast Kebabs"
+		}
+	]
+}
+```
+
+### rolls_3.json
+
+[rolls_3.json](assets/rolls/rolls_3.json) was added to verify that the board wraps around and that the players receive the Go bonus correctly.
+
+In this roll test, Peter buys most properties, Billy constantly lands on Peter's properties paying rent, and Charlotte and Sweedal own a single property and never pay any rent.
+
+The game lasts for 5 rounds and there are no bankruptcies. Due to the low rent amount and short game, Charlotte and Sweedal are the winners.
+
+Output:
+
+```json
+{
+	"winners": [
+		"Charlotte",
+		"Sweedal"
+	],
+	"players": [
+		{
+			"name": "Peter",
+			"money": 7.2,
+			"space": "GO"
+		},
+		{
+			"name": "Billy",
+			"money": 12.8,
+			"space": "GO"
+		},
+		{
+			"name": "Charlotte",
+			"money": 16,
+			"space": "Lanzhou Beef Noodle"
+		},
+		{
+			"name": "Sweedal",
+			"money": 16,
+			"space": "The Grand Tofu"
+		}
+	]
+}
+```
+
+## Improvements and rough edges
+
+With time constrains, there were some aspects of the game that can be improved with more time:
+
+- The Monopoly class is doing too much and is hard to unit test. The output logic should be on a different class.
+- The index.php file is setting up the config and the game. Ideally the config should live in a separate file and have the game setup on a separate class.
+- We throw exceptions but we don't present helpful guidance to the user. Ideally exceptions should be caught and presented with recommendations when running the cli.
+- Test coverage is at 40% and can be improved.
+- Float precision can give unexpected calculations between decimals (PHP is not really good with money). Ideally we would store all money in cents with no decimals.

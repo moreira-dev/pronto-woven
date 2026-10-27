@@ -1,0 +1,71 @@
+<?php
+
+namespace ProntoWoven\Service;
+
+use ProntoWoven\Interface\TileInterface;
+
+class BoardLoader
+{
+	public const string BOARD_FILE = 'board.json';
+
+	public function __construct(private readonly string $boardFilePath)
+	{
+	}
+
+	/**
+	 * Loads the board from the provided json file
+	 *
+	 * @return array<TileInterface> $typedBoard
+	 */
+	public function load(): array
+	{
+
+		$boardFile = $this->boardFilePath;
+		if (!file_exists($boardFile)) {
+			throw new \RuntimeException("Board file not found: $boardFile");
+		}
+		$boardData = file_get_contents($boardFile);
+		if ($boardData === false) {
+			throw new \RuntimeException("Failed to read board file: $boardFile");
+		}
+		$board = json_decode($boardData, true);
+		if ($board === null) {
+			throw new \RuntimeException("Failed to decode board JSON: $boardFile");
+		}
+
+		$typedBoard = [];
+
+		foreach ($board as $tile) {
+			if (!isset($tile['type'])) {
+				throw new \RuntimeException("Missing required property 'type' in board JSON: $boardFile");
+			}
+
+			$tileClass = 'ProntoWoven\Model\Tiles\\' . ucfirst($tile['type']);
+
+			if (!class_exists($tileClass)) {
+				throw new \RuntimeException("Tile class $tileClass does not exist for type {$tile['type']} in board JSON: $boardFile");
+			}
+
+			$tileObject = new $tileClass();
+
+			foreach ($tileClass::REQUIRED_PROPERTIES as $property) {
+				if (!isset($tile[$property])) {
+					throw new \RuntimeException("Missing required property $property in board JSON: $boardFile");
+				}
+			}
+
+			foreach ($tile as $key => $value) {
+				if (!property_exists($tileObject, $key)) {
+					throw new \RuntimeException("Invalid property $key in board JSON: $boardFile");
+				}
+
+				$tileObject->$key = $value;
+			}
+
+			$typedBoard[] = $tileObject;
+		}
+
+		return $typedBoard;
+	}
+
+}
