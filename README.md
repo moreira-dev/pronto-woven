@@ -7,11 +7,15 @@ See the [Woven Monopoly brief](docs/WOVEN_BRIEF.md) to understand initial rules 
 
 For simplicity and compatibility, running this program using Docker is recommended.
 
-Run the game:
+Run the game with json output:
 ```bash
 docker compose run --rm -T -q app ./assets/board.json ./assets/rolls/rolls_1.json --json 2>/dev/null
 ```
 
+Run the game with human output:
+```bash
+docker compose run --rm -T -q app ./assets/board.json ./assets/rolls/rolls_1.json
+```
 
 Run the tests:
 ```bash
@@ -52,3 +56,12 @@ docker compose run --rm --entrypoint composer app lint:fix
 The game can be extended to add new tile types.
 
 All tile types used in the board.json must have a corresponding class in the `src/Model/Tiles/` directory that implements [TileInterface](src/Interface/TileInterface.php).
+
+## Improvements and rough edges
+
+With time constrains, there were some aspects of the game that can be improved with more time:
+
+- The Monopoly class is doing too much and is hard to unit test. The output logic should be on a different class.
+- The index.php file is setting up the config and the game. Ideally the config should live in a separate file and have the game setup on a separate class.
+- We throw exceptions but we don't present helpful guidance to the user. Ideally exceptions should be caught and presented with recommendations when running the cli.
+- Code coverage is at 40% and can be improved.

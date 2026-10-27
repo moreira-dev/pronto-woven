@@ -9,6 +9,9 @@ use ProntoWoven\Service\Logger;
 
 class Property implements TileInterface
 {
+	public const array REQUIRED_PROPERTIES = ['name', 'type', 'price', 'colour'];
+
+
 	public string $name;
 	public string $type;
 	public float $price;

@@ -36,8 +36,23 @@ class BoardLoader
 		$typedBoard = [];
 
 		foreach ($board as $tile) {
+			if (!isset($tile['type'])) {
+				throw new \RuntimeException("Missing required property 'type' in board JSON: $boardFile");
+			}
+
 			$tileClass = 'ProntoWoven\Model\Tiles\\' . ucfirst($tile['type']);
+
+			if (!class_exists($tileClass)) {
+				throw new \RuntimeException("Tile class $tileClass does not exist for type {$tile['type']} in board JSON: $boardFile");
+			}
+
 			$tileObject = new $tileClass();
+
+			foreach ($tileClass::REQUIRED_PROPERTIES as $property) {
+				if (!isset($tile[$property])) {
+					throw new \RuntimeException("Missing required property $property in board JSON: $boardFile");
+				}
+			}
 
 			foreach ($tile as $key => $value) {
 				if (!property_exists($tileObject, $key)) {

@@ -26,10 +26,13 @@ class RollsLoader
 			throw new \RuntimeException("Failed to decode roll JSON: $rollFile");
 		}
 
-		// TODO validate positive integer
-
 		$rollQueue = new \SplQueue();
 		foreach ($rolls as $die) {
+
+			if (!is_int($die) || $die <= 0) {
+				throw new \RuntimeException("Invalid roll value: $die");
+			}
+
 			$rollQueue->enqueue($die);
 		}
 
