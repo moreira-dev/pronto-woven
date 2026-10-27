@@ -56,4 +56,9 @@ class Property implements TileInterface
 		}
 	}
 
+	public function passed(Player $player): void
+	{
+		// No extra actions when passing
+	}
+
 }

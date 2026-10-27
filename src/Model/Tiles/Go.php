@@ -13,6 +13,11 @@ class Go implements TileInterface
 
 	public function landed(Player $player, Board $board): void
 	{
+		// No extra actions when landing
+	}
+
+	public function passed(Player $player): void
+	{
 		$player->money += GO_MONEY_ADD;
 	}
 

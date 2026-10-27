@@ -17,4 +17,6 @@ interface TileInterface
 	 * Applies the effect of the tile on the player when they land on it
 	 */
 	public function landed(Player $player, Board $board): void;
+
+	public function passed(Player $player): void;
 }

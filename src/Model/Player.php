@@ -24,7 +24,15 @@ class Player
 	public function move(int $steps, Board $board): void
 	{
 		$boardSize = count($board->tiles);
-		$this->position = ($this->position + $steps) % $boardSize;
+
+		$newPosition = $this->position;
+
+		for ($i = 1; $i <= $steps; $i++) {
+			$newPosition = ($newPosition + 1) % $boardSize;
+			$board->tiles[$newPosition]->passed($this);
+		}
+
+		$this->position = $newPosition;
 
 		$board->tiles[$this->position]->landed($this, $board);
 	}

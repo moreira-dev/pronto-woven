@@ -9,6 +9,7 @@
 		 failOnWarning="true">
 	<php>
 		<const name="INITIAL_MONEY" value="16"/>
+		<const name="GO_MONEY_ADD" value="1"/>
 		<const name="RENT_RATIO" value="0.1"/>
 		<const name="RENT_ALL_COLOURS_RATIO" value="2"/>
 	</php>
