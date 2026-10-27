@@ -59,7 +59,7 @@ class Monopoly
 
 			if ($this->players[$this->playerTurn]->money < 0) {
 				echo $this->players[$this->playerTurn]->name . " is bankrupt!\n";
-				// TODO end the game
+				$this->endGame();
 				break;
 			}
 
@@ -67,8 +67,37 @@ class Monopoly
 
 		}
 
-		//print_r($this->board);
-		//print_r($this->rolls);
+		// No one is bankrupt but the rolls are finished
+		$this->endGame();
+
+	}
+
+	private function endGame(): void
+	{
+		$winners = [];
+		$maxMoney = -1;
+
+		foreach ($this->players as $player) {
+
+			if ($player->money === $maxMoney) {
+				$winners[] = $player;
+			}
+
+			if ($player->money > $maxMoney) {
+				$maxMoney = $player->money;
+				$winners = [$player];
+			}
+		}
+
+		if (count($winners)) {
+			echo "Winners with \${$maxMoney}:\n";
+			foreach ($winners as $winner) {
+				echo $winner->name . "\n";
+			}
+		} else {
+			echo "No one wins and no one loses!\n";
+		}
+
 		print_r($this->players);
 	}
 
