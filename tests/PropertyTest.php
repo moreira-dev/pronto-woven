@@ -22,8 +22,8 @@ final class PropertyTest extends TestCase
 
 		$property->landed($player, $board);
 
-		self::assertSame(15.8, $player->money);
-		self::assertSame(16.2, $owner->money);
+		self::assertSame('15.8', $player->money);
+		self::assertSame('16.2', $owner->money);
 		self::assertSame($owner, $property->owner);
 	}
 
@@ -36,7 +36,7 @@ final class PropertyTest extends TestCase
 
 		$property->landed($player, $board);
 
-		self::assertSame(16.0, $player->money);
+		self::assertSame('16', $player->money);
 		self::assertSame($player, $property->owner);
 	}
 
@@ -50,7 +50,7 @@ final class PropertyTest extends TestCase
 		$property->landed($player, $board);
 
 		self::assertSame($player, $property->owner);
-		self::assertSame(14.0, $player->money);
+		self::assertSame('14', $player->money);
 	}
 
 	#[Test]
@@ -64,7 +64,7 @@ final class PropertyTest extends TestCase
 
 		$property->landed($player, $board);
 
-		self::assertSame(15.6, $player->money);
-		self::assertSame(16.4, $owner->money);
+		self::assertSame('15.6', $player->money);
+		self::assertSame('16.4', $owner->money);
 	}
 }

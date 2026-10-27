@@ -4,6 +4,9 @@ FROM php:8.5-cli
 COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
 RUN apt-get update && apt-get install -y unzip git
 
+RUN pecl install pcov \
+    && docker-php-ext-enable pcov
+
 COPY ./composer.json ./composer.lock /usr/src/pronto/
 
 WORKDIR /usr/src/pronto

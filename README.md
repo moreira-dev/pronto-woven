@@ -7,8 +7,30 @@ See the [Woven Monopoly brief](docs/WOVEN_BRIEF.md) to understand initial rules 
 
 For simplicity and compatibility, running this program using Docker is recommended.
 
+Run the game:
 ```bash
-docker compose run app ./assets/board.json ./assets/rolls/rolls_1.json --json
+docker compose run --rm -T -q app ./assets/board.json ./assets/rolls/rolls_1.json --json 2>/dev/null
+```
+
+
+Run the tests:
+```bash
+docker compose run --rm --entrypoint composer app test
+```
+
+See test coverage:
+```bash
+docker compose run --rm --entrypoint composer app test:coverage
+```
+
+Run the linter:
+```bash
+docker compose run --rm --entrypoint composer app lint
+```
+
+Fix linting:
+```bash
+docker compose run --rm --entrypoint composer app lint:fix
 ```
 
 **Please note that the json files must be on the assets folder for the docker container to be able to access them**
