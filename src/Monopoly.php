@@ -4,6 +4,7 @@ namespace ProntoWoven;
 
 use ProntoWoven\Model\Board;
 use ProntoWoven\Model\Player;
+use ProntoWoven\Service\Logger;
 use SplQueue;
 
 class Monopoly
@@ -30,15 +31,17 @@ class Monopoly
 
 	public function startGame(bool $jsonOutput = false): void
 	{
+		Logger::reset();
+
 		while (!$this->rolls->isEmpty()) {
 			$die = $this->rolls->dequeue();
 
-			echo 'Turn: ' . $this->players[$this->playerTurn]->name . " rolls a $die with \${$this->players[$this->playerTurn]->money}\n";
+			Logger::log('Turn: ' . $this->players[$this->playerTurn]->name . " rolls a $die with \${$this->players[$this->playerTurn]->money}\n");
 
 			$this->players[$this->playerTurn]->move($die, $this->board);
 
 			if ($this->players[$this->playerTurn]->money < 0) {
-				echo $this->players[$this->playerTurn]->name . " is bankrupt!\n";
+				Logger::log($this->players[$this->playerTurn]->name . " is bankrupt!\n");
 				break;
 			}
 

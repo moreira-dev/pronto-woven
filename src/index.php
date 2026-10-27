@@ -11,6 +11,7 @@ use ProntoWoven\Service\RollsLoader;
 $assetsPath = __DIR__ . '/../assets/';
 
 // TODO move to config
+const LOG_FILE = __DIR__ . '/../assets/logs/debug.txt';
 const INITIAL_MONEY = 16; // Starting money for each player
 const GO_MONEY_ADD = 1; // Money received when passing GO
 const RENT_RATIO = 0.1; // % of the property price that is paid as rent

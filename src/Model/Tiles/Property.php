@@ -5,6 +5,7 @@ namespace ProntoWoven\Model\Tiles;
 use ProntoWoven\Interface\TileInterface;
 use ProntoWoven\Model\Player;
 use ProntoWoven\Model\Board;
+use ProntoWoven\Service\Logger;
 
 class Property implements TileInterface
 {
@@ -17,7 +18,7 @@ class Property implements TileInterface
 
 	public function landed(Player $player, Board $board): void
 	{
-		echo $player->name . ' landed on ' . $this->name . ".\n";
+		Logger::log($player->name . ' landed on ' . $this->name . ".\n");
 
 
 		if (!$this->owner) {
@@ -32,7 +33,7 @@ class Property implements TileInterface
 		$player->money -= $this->price;
 		$this->owner = $player;
 
-		echo $player->name . ' purchased ' . $this->name . ' for $' . $this->price . ".\n";
+		Logger::log($player->name . ' purchased ' . $this->name . ' for $' . $this->price . ".\n");
 
 	}
 	private function payRent(Player $player, Board $board): void
@@ -41,13 +42,13 @@ class Property implements TileInterface
 			$rent = $this->price * RENT_RATIO;
 
 			if ($this->owner->hasAllPropertiesOfColour($this->colour, $board)) {
-				echo $this->owner->name . ' has all properties of colour ' . $this->colour . ".\n";
+				Logger::log($this->owner->name . ' has all properties of colour ' . $this->colour . ".\n");
 
 				$rent *= RENT_ALL_COLOURS_RATIO;
 			}
 
 			$this->owner->money += min($player->money, $rent);
-			echo $player->name . ' paid rent of $' . $rent . ' to ' . $this->owner->name . ".\n";
+			Logger::log($player->name . ' paid rent of $' . $rent . ' to ' . $this->owner->name . ".\n");
 			$player->money -= $rent;
 		}
 	}

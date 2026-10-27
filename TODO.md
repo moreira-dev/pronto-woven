@@ -13,5 +13,5 @@
 - [] Output human-readable report at the end of the game
 - [x] Take the path to a board file and the path to a rolls file as its two arguments
 - [] Meaningful tests
-- [] Debug output
+- [x] Debug output
 - [] Readme up-to-date

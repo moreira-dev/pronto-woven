@@ -13,3 +13,6 @@ vendor/
 .phpunit.cache/
 .php-cs-fixer.cache
 coverage/
+
+# Runtime logs
+assets/logs/*.txt
