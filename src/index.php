@@ -14,21 +14,14 @@ $assetsPath = __DIR__ . '/../assets/';
 const LOG_FILE = __DIR__ . '/../assets/logs/debug.txt';
 const INITIAL_MONEY = 16; // Starting money for each player
 const GO_MONEY_ADD = 1; // Money received when passing GO
-const RENT_RATIO = 0.1; // % of the property price that is paid as rent
+const RENT_RATIO = 0.2; // % of the property price that is paid as rent
 const RENT_ALL_COLOURS_RATIO = 2; // Multiplier for rent if the owner has all properties of that colour
 
 
-$args = array_slice($argv, 1);
-$jsonIndex = array_search('--json', $args, true);
-$jsonOutput = false;
+$jsonOutput = array_search('--json', $argv, true);
 
-if ($jsonIndex !== false) {
-	$jsonOutput = true;
-	unset($args[$jsonIndex]);
-}
-
-$boardFilePath = $args[0] ?? null;
-$rollsFilePath = $args[1] ?? null;
+$boardFilePath = $argv[1] ?? null;
+$rollsFilePath = $argv[2] ?? null;
 
 if (!$boardFilePath || !$rollsFilePath) {
 	echo "Error: Missing required arguments.\n";

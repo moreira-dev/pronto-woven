@@ -5,6 +5,7 @@ namespace ProntoWoven\Model\Tiles;
 use ProntoWoven\Interface\TileInterface;
 use ProntoWoven\Model\Board;
 use ProntoWoven\Model\Player;
+use ProntoWoven\Service\Logger;
 
 class Go implements TileInterface
 {
@@ -19,6 +20,8 @@ class Go implements TileInterface
 	public function passed(Player $player): void
 	{
 		$player->money += GO_MONEY_ADD;
+
+		Logger::log($player->name . ' passed GO and received $' . GO_MONEY_ADD . ".\n");
 	}
 
 }

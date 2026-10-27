@@ -10,8 +10,12 @@
 
 
 - [x] Output json report at the end of the game
-- [] Output human-readable report at the end of the game
+- [x] Output human-readable report at the end of the game
 - [x] Take the path to a board file and the path to a rolls file as its two arguments
-- [] Meaningful tests
+- [x] Meaningful tests
 - [x] Debug output
-- [] Readme up-to-date
+- [x] Readme up-to-date
+- [x] Fix cli parameter
+- [x] rolls_3 with explanation
+- [x] PHP choice
+- [x] AI Sessions
