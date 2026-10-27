@@ -4,53 +4,36 @@ namespace ProntoWoven\Service;
 
 class RollsLoader
 {
-	public const string ROLLS_FOLDER = 'rolls';
-
-	public function __construct(private readonly string $assetsPath)
+	public function __construct(private readonly string $rollsFilePath)
 	{
 	}
 
 	/**
-	 * Loads all json files in the rolls folder
-	 *
-	 * @return array<string, \SplQueue> $rolls
+	 * Loads the rolls from a rolls file
 	 */
-	public function load(): array
+	public function load(): \SplQueue
 	{
-		$rollsFolder = $this->assetsPath . self::ROLLS_FOLDER;
-		if (!is_dir($rollsFolder)) {
-			throw new \RuntimeException("Rolls folder not found: $rollsFolder");
+		$rollFile = $this->rollsFilePath;
+		if (!file_exists($rollFile)) {
+			throw new \RuntimeException("Roll file not found: $rollFile");
+		}
+		$rollData = file_get_contents($rollFile);
+		if ($rollData === false) {
+			throw new \RuntimeException("Failed to read roll file: $rollFile");
+		}
+		$rolls = json_decode($rollData, true);
+		if ($rolls === null) {
+			throw new \RuntimeException("Failed to decode roll JSON: $rollFile");
 		}
 
-		$rollFiles = glob($rollsFolder . '/*.json');
-		if ($rollFiles === false) {
-			throw new \RuntimeException("Failed to read rolls folder: $rollsFolder");
+		// TODO validate positive integer
+
+		$rollQueue = new \SplQueue();
+		foreach ($rolls as $die) {
+			$rollQueue->enqueue($die);
 		}
 
-		$rolls = [];
-
-		foreach ($rollFiles as $rollFile) {
-			$rollName = basename($rollFile, '.json');
-
-			$rollData = file_get_contents($rollFile);
-			if ($rollData === false) {
-				throw new \RuntimeException("Failed to read roll file: $rollFile");
-			}
-			$roll = json_decode($rollData, true);
-			if ($roll === null) {
-				throw new \RuntimeException("Failed to decode roll JSON: $rollFile");
-			}
-
-
-			$rollQueue = new \SplQueue();
-			foreach ($roll as $die) {
-				$rollQueue->enqueue($die);
-			}
-
-			$rolls[$rollName] = $rollQueue;
-		}
-
-		return $rolls;
+		return $rollQueue;
 	}
 
 }

@@ -6,9 +6,9 @@ class Player
 {
 	public string $name;
 	public int $position;
-	public float $money;
+	public string $money; // Workaround in PHP to avoid precision errors
 
-	public function __construct(string $name, int $position = 0, int $initialMoney = INITIAL_MONEY)
+	public function __construct(string $name, int $position = 0, float $initialMoney = INITIAL_MONEY)
 	{
 		$this->name = $name;
 		$this->position = $position;

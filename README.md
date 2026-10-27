@@ -8,9 +8,10 @@ See the [Woven Monopoly brief](docs/WOVEN_BRIEF.md) to understand initial rules 
 For simplicity and compatibility, running this program using Docker is recommended.
 
 ```bash
-docker compose up
+docker compose run app ./assets/board.json ./assets/rolls/rolls_1.json --json
 ```
 
+**Please note that the json files must be on the assets folder for the docker container to be able to access them**
 
 ## **ASSUMPTIONS**
 

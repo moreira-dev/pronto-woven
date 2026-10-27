@@ -8,19 +8,19 @@ class BoardLoader
 {
 	public const string BOARD_FILE = 'board.json';
 
-	public function __construct(private readonly string $assetsPath)
+	public function __construct(private readonly string $boardFilePath)
 	{
 	}
 
 	/**
-	 * Loads the board from a BOARD_FILE JSON file
+	 * Loads the board from the provided json file
 	 *
 	 * @return array<TileInterface> $typedBoard
 	 */
 	public function load(): array
 	{
 
-		$boardFile = $this->assetsPath . self::BOARD_FILE;
+		$boardFile = $this->boardFilePath;
 		if (!file_exists($boardFile)) {
 			throw new \RuntimeException("Board file not found: $boardFile");
 		}

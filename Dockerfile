@@ -15,6 +15,6 @@ COPY ./src/ /usr/src/pronto/src
 COPY ./assets/ /usr/src/pronto/assets
 
 # Debug sessions
-CMD [ "tail", "-f", "/dev/null" ]
+# CMD [ "tail", "-f", "/dev/null" ]
 
-# CMD [ "php", "./src/index.php" ]
+ENTRYPOINT [ "php", "./src/index.php" ]
