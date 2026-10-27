@@ -89,11 +89,114 @@ The following configuration can be changed via global constants in the [index.ph
 
 ## Roll tests
 
+### rolls_1.json
+
+Output:
+
+```json
+{
+	"winners": [
+		"Peter"
+	],
+	"players": [
+		{
+			"name": "Peter",
+			"money": 24.4,
+			"space": "Lanzhou Beef Noodle"
+		},
+		{
+			"name": "Billy",
+			"money": 10.2,
+			"space": "Gami Chicken"
+		},
+		{
+			"name": "Charlotte",
+			"money": 14,
+			"space": "Betty's Burgers"
+		},
+		{
+			"name": "Sweedal",
+			"money": 12.4,
+			"space": "Gami Chicken"
+		}
+	]
+}
+```
+
+### rolls_2.json
+
+Output:
+
+```json
+{
+	"winners": [
+		"Charlotte"
+	],
+	"players": [
+		{
+			"name": "Peter",
+			"money": 17,
+			"space": "Fast Kebabs"
+		},
+		{
+			"name": "Billy",
+			"money": 21.6,
+			"space": "Gami Chicken"
+		},
+		{
+			"name": "Charlotte",
+			"money": 27,
+			"space": "Fast Kebabs"
+		},
+		{
+			"name": "Sweedal",
+			"money": 14.4,
+			"space": "Fast Kebabs"
+		}
+	]
+}
+```
+
+### rolls_3.json
+
 [rolls_3.json](assets/rolls/rolls_3.json) was added to verify that the board wraps around and that the players receive the Go bonus correctly.
 
 In this roll test, Peter buys most properties, Billy constantly lands on Peter's properties paying rent, and Charlotte and Sweedal own a single property and never pay any rent.
 
 The game lasts for 5 rounds and there are no bankruptcies. Due to the low rent amount and short game, Charlotte and Sweedal are the winners.
+
+Output:
+
+```json
+{
+	"winners": [
+		"Charlotte",
+		"Sweedal"
+	],
+	"players": [
+		{
+			"name": "Peter",
+			"money": 7.2,
+			"space": "GO"
+		},
+		{
+			"name": "Billy",
+			"money": 12.8,
+			"space": "GO"
+		},
+		{
+			"name": "Charlotte",
+			"money": 16,
+			"space": "Lanzhou Beef Noodle"
+		},
+		{
+			"name": "Sweedal",
+			"money": 16,
+			"space": "The Grand Tofu"
+		}
+	]
+}
+```
 
 ## Improvements and rough edges
 
